@@ -8,8 +8,8 @@ from flask import Flask, request, abort, jsonify, render_template, redirect, url
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import Movie, Actor
-
+from models import Movie, Actor, setup_db
+from auth import AuthError, requires_auth, get_token_auth_header
 #----------------------------------------------------------------------------#
 # Create and configure the app
 #----------------------------------------------------------------------------#
@@ -17,7 +17,7 @@ from models import Movie, Actor
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
-  setuo_db(app)
+  setup_db(app)
 
   # Set up CORS. Allow '*' for origins.
   cors = CORS(app)
@@ -31,7 +31,8 @@ def create_app(test_config=None):
 
   # Gets all movies
   @app.route('/movies')
-  def get_movies():
+  @requires_auth('get:movies')
+  def get_movies(payload):
     movies = Movie.query.order_by(Movie.id).all()
     formatted_movies = [movie.format() for movie in movies]
 
@@ -48,7 +49,8 @@ def create_app(test_config=None):
 
   # Creates movies
   @app.route('/movies', methods=['POST'])
-  def create_movie():
+  @requires_auth('post:movies')
+  def create_movie(payload):
     body = request.get_json()
 
     new_movie = body.get('movie', None)
@@ -68,23 +70,146 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-  '''@app.route('/movies/<int:movie_id>', methods=['DELETE'])
-  def delete_movie(movie_id):
+  # Deletes movies
+  @app.route('/movies/<int:movie_id>', methods=['DELETE'])
+  @requires_auth('delete:movies')
+  def delete_movie(payload, movie_id):
+    try:
+      movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
 
+      if movie is None:
+        abort(404)
+
+      movie.delete()
+
+      return jsonify({
+        'success': True,
+        'deleted': movie_id
+      })
+
+    except:
+      abort(422)
+
+  # Modifies movies
   @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-  def modify_actor(movie_id):
+  @requires_auth('patch:movies')
+  def modify_movie(payload, movie_id):
+    body = request.get_json()
 
+    try:
+      movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+      if movie is None:
+        abort(404)
+
+      if 'genres' in body:
+        movie.genres = str(body.get('genres'))
+      
+      if 'age_rating' in body:
+        movie.age_rating = str(body.get('age_rating'))
+
+      movie.update()
+
+      return jsonify({
+        'success': True,
+        'id': movie.id
+      })
+
+    except:
+      abort(400)
+
+  # Gets all actors
   @app.route('/actors')
-  def actors():
+  @requires_auth('get:actors')
+  def actors(payload):
+    body = request.get_json()
 
+    new_actor = body.get('actor', None)
+    age = body.get('age', None)
+    awards = body.get('awards', None)
+
+    try:
+      actor = Actor(actor=new_actor, age=age, awards=awards)
+      actor.insert()
+
+      return jsonify({
+        'success': True,
+        'created': actor.id,
+        'total_movies': len(Actor.query.all())
+      })
+
+    except:
+      abort(422)
+
+  # Creates actors
   @app.route('/actors', methods=['POST'])
-  def create_actor():
+  @requires_auth('post:actors')
+  def create_actor(payload):
+    body = request.get_json()
 
+    new_actor = body.get('actor', None)
+    age = body.get('age', None)
+    awards = body.get('awards', None)
+
+    try:
+      actor = Actor(actor=new_actor, age=age, awards=awards)
+      actor.insert()
+
+      return jsonify({
+        'success': True,
+        'created': actor.id,
+        'total_movies': len(Actor.query.all())
+      })
+
+    except:
+      abort(422)
+
+  # Deletes actors
   @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-  def delete_actor(actor_id):
+  @requires_auth('delete:actors')
+  def delete_actor(payload, actor_id):
+    try:
+      actor = Actor.query.filter(actor_id.id == actor_id).one_or_none()
 
+      if actor is None:
+        abort(404)
+
+      actor.delete()
+
+      return jsonify({
+        'success': True,
+        'deleted': movie_id
+      })
+
+    except:
+      abort(422)
+
+  # Modifies actors
   @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-  def modify_actor(actor_id):'''
+  @requires_auth('patch:actors')
+  def modify_actor(payload, actor_id):
+    body = request.get_json()
+
+    try:
+      actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+      if actor is None:
+        abort(404)
+
+      if 'age' in body:
+        actor.age = int(body.get('age'))
+      
+      if '' in body:
+        movie.awards = str(body.get('awards'))
+
+      movie.update()
+
+      return jsonify({
+        'success': True,
+        'id': movie.id
+      })
+
+    except:
+      abort(400)
+
 
 #----------------------------------------------------------------------------#
 # Error Handlers
@@ -149,12 +274,12 @@ def create_app(test_config=None):
   return app
 
 
-APP = create_app()
+app = create_app()
 
 #----------------------------------------------------------------------------#
 # Launch.
 #----------------------------------------------------------------------------#
 
 if __name__ == '__main__':
-    APP.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
 

@@ -1,14 +1,13 @@
 from flask import Flask, render_template, request, Response, flash, redirect, url_for, abort
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from forms import *
 from flask_migrate import Migrate
-from config import *
 import os
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
-database_path = os.environ
+#os.environ['DATABASE_URL'] = 'postgresql://zdangata:Smash1t1n@localhost:5432/capstone'
+database_path = os.environ.get('DATABASE_URL')
+db = SQLAlchemy()
 
 #----------------------------------------------------------------------------#
 # Database Setup
@@ -19,7 +18,9 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+    # db.create_all() is screwing everything up
+    migrate = Migrate(app, db)
+
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -66,7 +67,7 @@ class Actor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     actor = db.Column(db.String)
     age = db.Column(db.Integer)
-    awards = db.Column(db.ARRAY(db.String))
+    awards = db.Column(db.String)
 
     def __init__(self, actor, age, awards):
         self.actor = actor
