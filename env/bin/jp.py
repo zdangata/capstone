@@ -1,4 +1,4 @@
-#!/Users/ZanangDangata/Udacity/capstone/starter/env/bin/python3
+#!/Users/ZanangDangata/Udacity/capstone/env/bin/python3
 
 import sys
 import json
