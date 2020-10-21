@@ -61,13 +61,17 @@ def create_app(test_config=None):
       movie = Movie(movie=new_movie, genres=genres, age_rating=age_rating)
       movie.insert()
 
+      movies = Movie.query.all()
+      formated_movies = [movie.format for movie in movies]
+
       return jsonify({
         'success': True,
         'created': movie.id,
-        'total_movies': len(Movie.query.all())
+        'total_movies': len(movies)
       })
 
-    except:
+    except BaseException as e:
+      print(e)
       abort(422)
 
   # Deletes movies
@@ -87,7 +91,8 @@ def create_app(test_config=None):
         'deleted': movie_id
       })
 
-    except:
+    except BaseException as e:
+      print(e)
       abort(422)
 
   # Modifies movies
@@ -114,31 +119,27 @@ def create_app(test_config=None):
         'id': movie.id
       })
 
-    except:
+    except BaseException as e:
+      print(e)
       abort(400)
 
   # Gets all actors
   @app.route('/actors')
   @requires_auth('get:actors')
   def actors(payload):
-    body = request.get_json()
+    actors = Actor.query.order_by(Actor.id).all()
+    formatted_actors = [actor.format() for actor in actors]
 
-    new_actor = body.get('actor', None)
-    age = body.get('age', None)
-    awards = body.get('awards', None)
+    total_actors = len(actors)
 
-    try:
-      actor = Actor(actor=new_actor, age=age, awards=awards)
-      actor.insert()
-
-      return jsonify({
-        'success': True,
-        'created': actor.id,
-        'total_movies': len(Actor.query.all())
-      })
-
-    except:
-      abort(422)
+    if (total_actors == 0):
+      abort(404)
+    
+    return jsonify({
+      'success': True,
+      'actors': formatted_actors,
+      'total_actors': total_actors
+    })
 
   # Creates actors
   @app.route('/actors', methods=['POST'])
@@ -154,13 +155,17 @@ def create_app(test_config=None):
       actor = Actor(actor=new_actor, age=age, awards=awards)
       actor.insert()
 
+      actors = Actor.query.all()
+      formated_actors = [actor.format for actor in actors]
+
       return jsonify({
         'success': True,
         'created': actor.id,
         'total_movies': len(Actor.query.all())
       })
 
-    except:
+    except BaseException as e:
+      print(e)
       abort(422)
 
   # Deletes actors
@@ -168,7 +173,7 @@ def create_app(test_config=None):
   @requires_auth('delete:actors')
   def delete_actor(payload, actor_id):
     try:
-      actor = Actor.query.filter(actor_id.id == actor_id).one_or_none()
+      actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
 
       if actor is None:
         abort(404)
@@ -177,10 +182,11 @@ def create_app(test_config=None):
 
       return jsonify({
         'success': True,
-        'deleted': movie_id
+        'deleted': actor_id
       })
 
-    except:
+    except BaseException as e:
+      print(e)
       abort(422)
 
   # Modifies actors
@@ -197,18 +203,19 @@ def create_app(test_config=None):
       if 'age' in body:
         actor.age = int(body.get('age'))
       
-      if '' in body:
-        movie.awards = str(body.get('awards'))
+      if 'awards' in body:
+        actor.awards = str(body.get('awards'))
 
-      movie.update()
+      actor.update()
 
       return jsonify({
         'success': True,
-        'id': movie.id
+        'id': actor.id
       })
 
-    except:
-      abort(400)
+    except BaseException as e:
+      print(e)
+      abort(40)
 
 
 #----------------------------------------------------------------------------#
