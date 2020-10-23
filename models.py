@@ -21,6 +21,10 @@ def setup_db(app, database_path=database_path):
     # db.create_all() is screwing everything up
     migrate = Migrate(app, db)
 
+def create_app(test_config=None):
+  # create and configure the app
+  app = Flask(__name__)
+  setup_db(app)
 
 #----------------------------------------------------------------------------#
 # Models.
