@@ -71,11 +71,14 @@ python test_app.py
 ```
 #### Running the test script
 To run the unittests, run the following command from the capstone directory:
+
 `python3 test_app.py`
 
 ### Using Postman
 The app is hosted at the Heroku URL address below.
+
 `https://zdcastagency.herokuapp.com/`
+
 This should be used for requests in postman.
 
 #### Example Requests
