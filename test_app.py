@@ -100,6 +100,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
 
     #test for get request error behaviour in actors
+    def request_when_no_actors(self):
         res = self.client().get('/actors')
         data = json.loads(res.data)
 
