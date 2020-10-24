@@ -55,16 +55,8 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 
 ## Authentication
 
-## Heroku
-### Testing Requests in Postman
-The application can accept requests via either curl or postman. To send requests, use the Heroku App URL below:
 
-`https://zdcastagency.herokuapp.com/`
 
-#### Example Requests
-get request
-
-post request
 
 
 ## Testing
@@ -82,3 +74,13 @@ To run the unittests, run the following command from the capstone directory:
 `python3 test_app.py`
 
 ### Using Postman
+The app is hosted at the Heroku URL address below.
+`https://zdcastagency.herokuapp.com/`
+This should be used for requests in postman.
+
+#### Example Requests
+Requests should be sent to either of the two resources below...
+```
+https://zdcastagency.herokuapp.com/actors
+https://zdcastagency.herokuapp.com/movies
+```

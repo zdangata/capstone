@@ -76,6 +76,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['total_movies'])
         self.assertTrue(len(data['movies']))
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for get reques error behaviour in questions
     def request_when_no_movies(self):
@@ -85,7 +86,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unauthorised')
-    
+        print(self.assistant_header, self.director_header, self.producer_header)
+
     #test for successful get request in actors
     def test_get_actors(self):#yes
         actor = Actor(actor='Gemma Jones', age=27, awards='None')
@@ -98,6 +100,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['total_actors'])
         self.assertTrue(len(data['actors']))
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for get request error behaviour in actors
     def request_when_no_actors(self):
@@ -107,6 +110,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unauthorised')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for creation of new movie
     def test_create_new_movie(self):#yes
@@ -117,6 +121,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['created'])
         self.assertTrue(data['total_movies'])
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for movie creation which is not allowed
     def test_405_if_movie_creation_not_allowed(self):#yes
@@ -126,6 +131,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'method not allowed')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for creation of new actor
     def test_create_new_actor(self):#yes
@@ -136,6 +142,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['created'])
         self.assertTrue(data['total_actors'])
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for actor creation which is not allowed
     def test_405_if_actor_creation_not_allowed(self):#yes
@@ -145,6 +152,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'method not allowed')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for movie update
     def test_update_movie(self):#yes
@@ -155,6 +163,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(movie.format()['age_rating'], 'Twenty-one')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for failed movie update
     def test_400_for_failed_movie_update(self):#yes
@@ -164,6 +173,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'bad request')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for actor update
     def test_update_actor(self):
@@ -174,6 +184,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(movie.format()['age_rating'], 'Twenty-one')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for failed actor update
     def test_400_for_failed_actor_update(self):
@@ -183,6 +194,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'bad request')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for delete request in movies
     def test_delete_movie(self):#yes
@@ -196,6 +208,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['deleted'], 1)
         self.assertTrue(data['total_movies'])
         self.assertEqual(movie, None)
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for deletion of non-existant items in movies
     def test_422_if_movie_does_not_exist(self):#yes
@@ -205,6 +218,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unprocessable entity')
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for delete request in actors
     def test_delete_actor(self):#yes
@@ -218,6 +232,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['deleted'], 1)
         self.assertTrue(data['total_actors'])
         self.assertEqual(actor, None)
+        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for deletion of non-existant items in movies
     def test_422_if_actor_does_not_exist(self):#yes
@@ -227,6 +242,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unprocessable entity')
+        print(self.assistant_header, self.director_header, self.producer_header)
    
 
 
