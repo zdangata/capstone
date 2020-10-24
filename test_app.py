@@ -65,7 +65,7 @@ class CapstoneTestCase(unittest.TestCase):
     Write at least one test for each test for successful operation and for expected errors.
     """
     #test for successful get request in movies
-    def test_get_movies(self):
+    def test_get_movies(self):#yes
         movie = Movie(movie='War of Titans', genres='Action', age_rating='Fifteen')
         movie.insert
 
@@ -84,10 +84,10 @@ class CapstoneTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'resource not found')
+        self.assertEqual(data['message'], 'unauthorised')
     
     #test for successful get request in actors
-    def test_get_actors(self):
+    def test_get_actors(self):#yes
         actor = Actor(actor='Gemma Jones', age=27, awards='None')
         actor.insert
 
@@ -106,10 +106,10 @@ class CapstoneTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'resource not found')
+        self.assertEqual(data['message'], 'unauthorised')
 
     #test for creation of new movie
-    def test_create_new_movie(self):
+    def test_create_new_movie(self):#yes
         res = self.client().post('/movies', headers=self.producer_header, json={'movie': 'War of Titans', 'genres': 'Action', 'age_rating': 'Fifteen'})
         data = json.loads(res.data)
         
@@ -119,7 +119,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['total_movies'])
 
     #test for movie creation which is not allowed
-    def test_405_if_movie_creation_not_allowed(self):
+    def test_405_if_movie_creation_not_allowed(self):#yes
         res = self.client().post('/movies', headers=self.director_header, json={'movie': 'War of Titans', 'genres': 'Action', 'age_rating': 'Fifteen'})
         data = json.loads(res.data)
 
@@ -128,7 +128,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'method not allowed')
 
     #test for creation of new actor
-    def test_create_new_actor(self):
+    def test_create_new_actor(self):#yes
         res = self.client().post('/actors', headers=self.director_header, json={'actor': 'Derek Salt', 'age': 29, 'awards': 'Oscars'})
         data = json.loads(res.data)
         
@@ -138,7 +138,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['total_actors'])
 
     #test for actor creation which is not allowed
-    def test_405_if_actor_creation_not_allowed(self):
+    def test_405_if_actor_creation_not_allowed(self):#yes
         res = self.client().post('/actors', headers=self.assistant_header, json={'actor': 'Derek Salt', 'age': 29, 'awards': 'Oscars'})
         data = json.loads(res.data)
 
@@ -147,7 +147,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'method not allowed')
 
     #test for movie update
-    def test_update_movie(self):
+    def test_update_movie(self):#yes
         res = self.client().patch('/movies/1', json={'age_rating': 'Twenty-one'})
         data = json.loads(res.data)
         movie = Movie.query.filter(Movie.id == 1)
@@ -157,7 +157,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(movie.format()['age_rating'], 'Twenty-one')
 
     #test for failed movie update
-    def test_400_for_failed_movie_update(self):
+    def test_400_for_failed_movie_update(self):#yes
         res = self.client().patch('/movies/1')
         data = json.loads(res.data)
 
@@ -166,7 +166,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'bad request')
 
     #test for actor update
-    def test_update_movie(self):
+    def test_update_actor(self):
         res = self.client().patch('/movies/1', json={'age_rating': 'Twenty-one'})
         data = json.loads(res.data)
         movie = Movie.query.filter(Movie.id == 1)
@@ -176,7 +176,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(movie.format()['age_rating'], 'Twenty-one')
 
     #test for failed actor update
-    def test_400_for_failed_movie_update(self):
+    def test_400_for_failed_actor_update(self):
         res = self.client().patch('/movies/1')
         data = json.loads(res.data)
 
@@ -185,7 +185,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'bad request')
 
     #test for delete request in movies
-    def test_delete_movie(self):
+    def test_delete_movie(self):#yes
         res = self.client().delete('/movies/1')
         data = json.loads(res.data)
 
@@ -198,7 +198,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(movie, None)
 
     #test for deletion of non-existant items in movies
-    def test_422_if_movie_does_not_exist(self):
+    def test_422_if_movie_does_not_exist(self):#yes
         res = self.client().delete('/movies/1000')
         data = json.loads(res.data)
 
@@ -207,7 +207,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'unprocessable entity')
 
     #test for delete request in actors
-    def test_delete_actor(self):
+    def test_delete_actor(self):#yes
         res = self.client().delete('/actors/1')
         data = json.loads(res.data)
 
@@ -220,7 +220,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(actor, None)
 
     #test for deletion of non-existant items in movies
-    def test_422_if_actor_does_not_exist(self):
+    def test_422_if_actor_does_not_exist(self):#yes
         res = self.client().delete('/actors/1000')
         data = json.loads(res.data)
 
