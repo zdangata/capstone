@@ -68,10 +68,17 @@ post request
 
 
 ## Testing
-To run the tests, run
+### Using Unittest
+#### Setting up the test database
+Run the following commands to create the test database and add the required schemas.
 ```bash
 dropdb capstone_test
 createdb capstone_test
 psql capstone_test < casting.psql
 python test_app.py
 ```
+#### Running the test script
+To run the unittests, run the following command from the capstone directory:
+`python3 test_app.py`
+
+### Using Postman
