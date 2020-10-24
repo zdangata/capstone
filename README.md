@@ -55,9 +55,9 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 
 ## Testing
 To run the tests, run
-```
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python test_flaskr.py
+```bash
+dropdb capstone_test
+createdb capstone_test
+psql capstone_test < casting.psql
+python test_app.py
 ```
