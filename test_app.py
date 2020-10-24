@@ -78,17 +78,20 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(len(data['movies']))
 
     #test for get request error behaviour in questions
-    def test_404_sent_request_when_no_movies_present(self):
+    def request_when_no_movies(self):
         res = self.client().get('/movies')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
     
     #test for successful get request in actors
     def test_get_actors(self):
-        res = self.client().get('/actors')
+        actor = Actor(actor='Gemma Jones', age=27, awards='None')
+        actor.insert
+
+        res = self.client().get('/actors', headers=self.assistant_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -97,11 +100,10 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
 
     #test for get request error behaviour in actors
-    def test_404_sent_request_when_no_actors_present(self):
         res = self.client().get('/actors')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 404)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
