@@ -5,6 +5,8 @@ from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
+#os.environ['DATABASE_URL'] = 'postgres://mpqykadjmexknq:92e4eb5c8ebfbf0c2ab75deb48d30bf8d7f0da569c85891a7bf408fc75d0b2d3@ec2-23-20-70-32.compute-1.amazonaws.com:5432/d9ksod21on33pi'
+os.environ['DATABASE_URL'] = 'postgresql://zdangata:Smash1t1n@localhost:5432/capstone_test'
 database_path = os.environ['DATABASE_URL']
 db = SQLAlchemy()
 
@@ -17,7 +19,7 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+    db.create_all() #is screwing everything up
     migrate = Migrate(app, db)
 
 def create_app(test_config=None):
