@@ -109,7 +109,7 @@ class CapstoneTestCase(unittest.TestCase):
 
     #test for creation of new movie
     def test_create_new_movie(self):
-        res = self.client().post('/movies', json=self.new_movie)
+        res = self.client().post('/movies', headers=self.producer_header, json={'movie': 'War of Titans', 'genres': 'Action', 'age_rating': 'Fifteen'})
         data = json.loads(res.data)
         
         self.assertEqual(res.status_code, 200)
@@ -119,16 +119,16 @@ class CapstoneTestCase(unittest.TestCase):
 
     #test for movie creation which is not allowed
     def test_405_if_movie_creation_not_allowed(self):
-        res = self.client().post('/movies', json={'movie': 4455,'genres': 'Action','age_rating': 'Fifteen'})
+        res = self.client().post('/movies', headers=self.director_header, json={'movie': 'War of Titans', 'genres': 'Action', 'age_rating': 'Fifteen'})
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 405)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'method not allowed')
 
     #test for creation of new actor
     def test_create_new_actor(self):
-        res = self.client().post('/actors', json=self.new_actor)
+        res = self.client().post('/actors', headers=self.director_header, json={'actor': 'Derek Salt', 'age': 29, 'awards': 'Oscars'})
         data = json.loads(res.data)
         
         self.assertEqual(res.status_code, 200)
@@ -138,10 +138,10 @@ class CapstoneTestCase(unittest.TestCase):
 
     #test for actor creation which is not allowed
     def test_405_if_actor_creation_not_allowed(self):
-        res = self.client().post('/actors', json={'actor': 'Derek Salt', 'age': 'Twenty-nine', 'awards': 'Oscars'})
+        res = self.client().post('/actors', headers=self.assistant_header, json={'actor': 'Derek Salt', 'age': 29, 'awards': 'Oscars'})
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 405)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'method not allowed')
 
