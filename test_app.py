@@ -77,11 +77,11 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertTrue(data['total_movies'])
         self.assertTrue(len(data['movies']))
 
-    #test for get request error behaviour in questions
+    #test for get reques error behaviour in questions
     def request_when_no_movies(self):
-        res = self.client().get('/movies')
+        res = self.client().get('/movies', headers=None)
         data = json.loads(res.data)
-
+        
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unauthorised')
@@ -101,7 +101,7 @@ class CapstoneTestCase(unittest.TestCase):
 
     #test for get request error behaviour in actors
     def request_when_no_actors(self):
-        res = self.client().get('/actors')
+        res = self.client().get('/actors', headers=None)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)

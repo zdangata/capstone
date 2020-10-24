@@ -53,6 +53,20 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
+## Authentication
+
+## Heroku
+### Testing Requests in Postman
+The application can accept requests via either curl or postman. To send requests, use the Heroku App URL below:
+
+`https://zdcastagency.herokuapp.com/`
+
+#### Example Requests
+get request
+
+post request
+
+
 ## Testing
 To run the tests, run
 ```bash
