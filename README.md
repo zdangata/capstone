@@ -58,6 +58,12 @@ Three user profiles were created and each assigned one of the following rules:
 * executive producer
 
 Each role has a unique bearer token, which will be used to authorise the requests available to that particular role.
+The tokens can be found in the setup.sh file
+
+## Environment Variables
+To export the environment variables correctly, run teh following command from the terminal:
+
+`source setup.sh` 
 
 
 ## Testing
@@ -245,3 +251,12 @@ https://zdcastagency.herokuapp.com/movies
     "success": true
 }
 ```
+## Authors
+Udacity provided the starter files for the project.
+
+Zanang Dangata built the API, deployed the app using Heroku and created the test suite.
+
+## Acknowledgements
+Shout out to my mentor, Jonathan Carrol for guiding me through this process.
+
+I would also like to thank Nicolas Georgiou, Calvin Connaghan and Andrew Muir for their support in this assignment.
