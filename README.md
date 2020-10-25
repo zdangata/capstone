@@ -80,6 +80,7 @@ python test_app.py
 To run the unittests, run the following command from the capstone directory:
 
 `python3 test_app.py`
+Make sure you change the DATABASE_URL environment variable in setup.sh file to have your own database url.
 
 ### Using Postman
 The app is hosted at the Heroku URL address below.
