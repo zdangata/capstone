@@ -33,13 +33,6 @@ This will install all of the required packages we selected within the `requireme
 
 - [Gunicorn](https://docs.gunicorn.org/en/stable/) is the production ready server which we will be using to deploy our app.
 
-
-## Database Setup
-With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
-```bash
-psql trivia < trivia.psql
-```
-
 ## Running the server
 
 From within the `capstone` directory first ensure you are working using your created virtual environment.
@@ -57,9 +50,14 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
 ## Authentication
+Role Based Access Control (RBAC) has been configured using [Auth0](https://auth0.com/).
+Three user profiles were created and each assigned one of the following rules:
 
+* casting assistant
+* casting director
+* executive producer
 
-
+Each role has a unique bearer token, which will be used to authorise the requests available to that particular role.
 
 
 ## Testing
@@ -90,3 +88,49 @@ Requests should be sent to either of the two resources below...
 https://zdcastagency.herokuapp.com/actors
 https://zdcastagency.herokuapp.com/movies
 ```
+## Endpoints
+### GET /movies
+* General:
+
+    * Returns a list of each of the movie objects
+    * Returns the total number of objects
+* Sample: `https://zdcastagency.herokuapp.com/movies`
+### GET /actors
+* General:
+
+    * Returns a list of each of the actor objects
+    * Returns the total number of objects
+
+### POST /movies
+* General:
+
+    * Creates a new movie
+    * Returns the number of the created movie, the success status of the request and the new total number of movies
+
+### POST /actors
+* General:
+
+    * Creates a new actor
+    * Returns the number of the created actor, the success status of the request and the new total number of actors
+
+### DELETE /movies
+* General:
+
+    * Deletes a specific movie, using its unique id as in input
+    * Returns the deleted movie number and the success status of the request.
+
+### DELETE /actors
+* General:
+
+    * Deletes a specific actor, using its unique id as in input
+    * Returns the deleted actor number and the success status of the request.
+
+### PATCH /movies
+* General:
+
+    * Returns the success status of the request and the id of the updated movie
+
+### PATCH /actors
+* General:
+
+    * Returns the success status of the request and the id of the updated actor
