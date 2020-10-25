@@ -188,19 +188,60 @@ https://zdcastagency.herokuapp.com/movies
 
     * Deletes a specific movie, using its unique id as in input
     * Returns the deleted movie number and the success status of the request.
+* Sample: `https://zdcastagency.herokuapp.com/movies/11`
+
+```
+{
+    "deleted": 11,
+    "success": true
+}
+```
 
 ### DELETE /actors
 * General:
 
     * Deletes a specific actor, using its unique id as in input
     * Returns the deleted actor number and the success status of the request.
+* Sample: `https://zdcastagency.herokuapp.com/actors/13`
 
+```
+{
+    "deleted": 13,
+    "success": true
+}
+```
 ### PATCH /movies
 * General:
 
+    * Modifies the details of a movie
     * Returns the success status of the request and the id of the updated movie
+* Sample: `https://zdcastagency.herokuapp.com/movies/15`
+* JSON Sample for post request: `{
+    "genres": "Rom Com",
+    "age_rating": "Fifteen"
+}`
+
+```
+{
+    "id": 15,
+    "success": true
+}
+```
 
 ### PATCH /actors
 * General:
 
+    * Modifies the details of a movie
     * Returns the success status of the request and the id of the updated actor
+* Sample: `https://zdcastagency.herokuapp.com/actors/14`
+* JSON Sample for post request: `{
+    "id": 15,
+    "success": true
+}`
+
+```
+{
+    "id": 14,
+    "success": true
+}
+```
