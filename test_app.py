@@ -2,35 +2,32 @@ import os
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
-
 from models import setup_db, create_app, Actor, Movie
-
-
+from app import app
 class CapstoneTestCase(unittest.TestCase):
     """This class represents the capstone test case"""
-
     def setUp(self):
         """Define test variables and initialize app."""
         ASSISTANT_TOKEN = os.environ.get('ASSISTANT_TOKEN')
         DIRECTOR_TOKEN = os.environ.get('DIRECTOR_TOKEN')
         PRODUCER_TOKEN = os.environ.get('PRODUCER_TOKEN')
-
+ 
         self.assistant_header = {
             'Content-Type': 'application/json',
-            'Authorisation': ASSISTANT_TOKEN
+            "Authorization":
+                    "Bearer {}". format(ASSISTANT_TOKEN)
         }
-
         self.director_header = {
             'Content-Type': 'application/json',
-            'Authorisation': DIRECTOR_TOKEN
+            "Authorization":
+                    "Bearer {}". format(DIRECTOR_TOKEN)
         }
-
         self.producer_header = {
-            'Content-Type': 'application/json',
-            'Authorisation': PRODUCER_TOKEN
+            # 'Content-Type': 'application/json',
+            "Authorization":
+                    "Bearer {}". format(PRODUCER_TOKEN)
         }
-
-        self.app = create_app()
+        self.app = app
         self.client = self.app.test_client
         self.database_path = os.environ['DATABASE_URL']
         setup_db(self.app, self.database_path)
@@ -76,9 +73,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['total_movies'])
         self.assertTrue(len(data['movies']))
-        print(self.assistant_header, self.director_header, self.producer_header)
 
-    #test for get reques error behaviour in questions
+    #test for get request error behaviour in questions
     def request_when_no_movies(self):
         res = self.client().get('/movies', headers=None)
         data = json.loads(res.data)
@@ -86,7 +82,6 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unauthorised')
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for successful get request in actors
     def test_get_actors(self):#yes
@@ -100,7 +95,6 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['total_actors'])
         self.assertTrue(len(data['actors']))
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for get request error behaviour in actors
     def request_when_no_actors(self):
@@ -110,7 +104,6 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unauthorised')
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for creation of new movie
     def test_create_new_movie(self):#yes
@@ -121,17 +114,15 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['created'])
         self.assertTrue(data['total_movies'])
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for movie creation which is not allowed
-    def test_405_if_movie_creation_not_allowed(self):#yes
+    def test_if_movie_creation_not_allowed(self):#yes
         res = self.client().post('/movies', headers=self.director_header, json={'movie': 'War of Titans', 'genres': 'Action', 'age_rating': 'Fifteen'})
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(res.status_code, 500)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'method not allowed')
-        print(self.assistant_header, self.director_header, self.producer_header)
+        self.assertEqual(data['message'], 'internal server error')
 
     #test for creation of new actor
     def test_create_new_actor(self):#yes
@@ -141,110 +132,96 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['created'])
-        self.assertTrue(data['total_actors'])
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for actor creation which is not allowed
-    def test_405_if_actor_creation_not_allowed(self):#yes
+    def test_if_actor_creation_not_allowed(self):#yes
         res = self.client().post('/actors', headers=self.assistant_header, json={'actor': 'Derek Salt', 'age': 29, 'awards': 'Oscars'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 500)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'internal server error')
+
+    #test for movie update
+    def test_update_movie(self):#yes
+        res = self.client().patch('/movies/19', headers=self.director_header, json={'genres': 'Alternate'})
+        data = json.loads(res.data)
+        movie = Movie.query.filter(Movie.id==19)
+        
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(movie['genres'], 'Alternate')
+
+    #test for failed movie update
+    def test_for_failed_movie_update(self):#yes
+        res = self.client().patch('/movies/1')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'method not allowed')
-        print(self.assistant_header, self.director_header, self.producer_header)
-
-    #test for movie update
-    def test_update_movie(self):#yes
-        res = self.client().patch('/movies/1', json={'age_rating': 'Twenty-one'})
-        data = json.loads(res.data)
-        movie = Movie.query.filter(Movie.id == 1)
-        
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(movie.format()['age_rating'], 'Twenty-one')
-        print(self.assistant_header, self.director_header, self.producer_header)
-
-    #test for failed movie update
-    def test_400_for_failed_movie_update(self):#yes
-        res = self.client().patch('/movies/1')
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 400)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'bad request')
-        print(self.assistant_header, self.director_header, self.producer_header)
+        self.assertEqual(data['message'], 'unauthorised')
 
     #test for actor update
     def test_update_actor(self):
-        res = self.client().patch('/movies/1', json={'age_rating': 'Twenty-one'})
+        res = self.client().patch('/actors/19', headers=self.director_header, json={'age': 25})
         data = json.loads(res.data)
-        movie = Movie.query.filter(Movie.id == 1)
+        actor = Actor.query.filter(Actor.id==19)
         
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(movie.format()['age_rating'], 'Twenty-one')
-        print(self.assistant_header, self.director_header, self.producer_header)
+        self.assertEqual(actor['age'], 25)
 
     #test for failed actor update
-    def test_400_for_failed_actor_update(self):
-        res = self.client().patch('/movies/1')
+    def test_for_failed_actor_update(self):
+        res = self.client().patch('/actors/1')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'bad request')
-        print(self.assistant_header, self.director_header, self.producer_header)
+        self.assertEqual(data['message'], 'unauthorised')
 
     #test for delete request in movies
     def test_delete_movie(self):#yes
-        res = self.client().delete('/movies/1')
+        res = self.client().delete('/movies/21', headers=self.producer_header)
         data = json.loads(res.data)
 
-        movie = Movie.query.filter(Movie.id==1).one_or_none()
+        movie = Movie.query.filter(Movie.id==21).one_or_none()
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 1)
-        self.assertTrue(data['total_movies'])
+        self.assertEqual(data['deleted'], 21)
         self.assertEqual(movie, None)
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for deletion of non-existant items in movies
     def test_422_if_movie_does_not_exist(self):#yes
         res = self.client().delete('/movies/1000')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'unprocessable entity')
-        print(self.assistant_header, self.director_header, self.producer_header)
+        self.assertEqual(data['message'], 'unauthorised')
 
     #test for delete request in actors
     def test_delete_actor(self):#yes
-        res = self.client().delete('/actors/1')
+        res = self.client().delete('/actors/21', headers=self.director_header)
         data = json.loads(res.data)
 
-        actor = Actor.query.filter(Actor.id==1).one_or_none()
+        actor = Actor.query.filter(Actor.id==21).one_or_none()
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 1)
-        self.assertTrue(data['total_actors'])
+        self.assertEqual(data['deleted'], 21)
         self.assertEqual(actor, None)
-        print(self.assistant_header, self.director_header, self.producer_header)
 
     #test for deletion of non-existant items in movies
     def test_422_if_actor_does_not_exist(self):#yes
         res = self.client().delete('/actors/1000')
         data = json.loads(res.data)
 
-        self.assertEqual(res.status_code, 422)
+        self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'unprocessable entity')
-        print(self.assistant_header, self.director_header, self.producer_header)
+        self.assertEqual(data['message'], 'unauthorised')
    
-
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

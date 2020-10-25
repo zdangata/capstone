@@ -161,7 +161,7 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'created': actor.id,
-        'total_movies': len(Actor.query.all())
+        'total_actors': len(Actor.query.all())
       })
 
     except BaseException as e:

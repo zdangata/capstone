@@ -95,23 +95,93 @@ https://zdcastagency.herokuapp.com/movies
     * Returns a list of each of the movie objects
     * Returns the total number of objects
 * Sample: `https://zdcastagency.herokuapp.com/movies`
+
+```
+{
+    "movies": [
+        {
+            "age_rating": "Fifteen",
+            "genres": "Action",
+            "id": 4,
+            "movie": "War of Titans"
+        },
+        {
+            "age_rating": "Fifteen",
+            "genres": "Action",
+            "id": 5,
+            "movie": "War of Titans"
+        }
+    ],
+    "success": true,
+    "total_movies": 2
+}
+```
 ### GET /actors
 * General:
 
     * Returns a list of each of the actor objects
     * Returns the total number of objects
+* Sample: `https://zdcastagency.herokuapp.com/actors`
+```
+{
+    "actors": [
+        {
+            "actor": "Derek Salt",
+            "age": 29,
+            "awards": "Oscars",
+            "id": 6
+        },
+        {
+            "actor": "Derek Salt",
+            "age": 29,
+            "awards": "Oscars",
+            "id": 7
+        }
+    ],
+    "success": true,
+    "total_actors": 2
+}
+```
 
 ### POST /movies
 * General:
 
     * Creates a new movie
     * Returns the number of the created movie, the success status of the request and the new total number of movies
+* Sample: `https://zdcastagency.herokuapp.com/movies`
+* JSON Sample for post request: `{
+    "movie": "Click the Dot",
+    "genres": "Alternative",
+    "age_rating": "Universal"
+}`
+
+```
+{
+    "created": 26,
+    "success": true,
+    "total_movies": 11
+}
+```
 
 ### POST /actors
 * General:
 
     * Creates a new actor
     * Returns the number of the created actor, the success status of the request and the new total number of actors
+* Sample: `https://zdcastagency.herokuapp.com/actors`
+* JSON Sample for post request: `{
+    "actor": "Mike Birch",
+    "age": "29",
+    "awards": "None"
+}`
+
+```
+{
+    "created": 28,
+    "success": true,
+    "total_movies": 12
+}
+```
 
 ### DELETE /movies
 * General:
