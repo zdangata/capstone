@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 os.environ['DATABASE_URL'] = 'postgres://mpqykadjmexknq:92e4eb5c8ebfbf0c2ab75deb48d30bf8d7f0da569c85891a7bf408fc75d0b2d3@ec2-23-20-70-32.compute-1.amazonaws.com:5432/d9ksod21on33pi'
-database_path = os.environ['DATABASE_URL']
+database_path = 'postgres://mpqykadjmexknq:92e4eb5c8ebfbf0c2ab75deb48d30bf8d7f0da569c85891a7bf408fc75d0b2d3@ec2-23-20-70-32.compute-1.amazonaws.com:5432/d9ksod21on33pi'
 db = SQLAlchemy()
 
 #----------------------------------------------------------------------------#
