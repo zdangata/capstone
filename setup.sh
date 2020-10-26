@@ -1,4 +1,4 @@
-export AUTH0_DOMAIN='fsndp.eu.auth0.com'
+export AUTH0_DOMAIN=fsndp.eu.auth0.com
 export ALGORITHMS='RS256'
 export API_AUDIENCE='https://localhost:5000'
 
