@@ -17,7 +17,9 @@ from auth import AuthError, requires_auth, get_token_auth_header
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
+  db = SQLAlchemy()
   #setup_db(app)
+  migrate = Migrate(app, db)
 
   # Set up CORS. Allow '*' for origins.
   cors = CORS(app)
