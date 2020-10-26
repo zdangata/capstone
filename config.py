@@ -13,5 +13,5 @@ DEBUG = True
 # Connect to the database
 
 
-SQLALCHEMY_DATABASE_URI = 'postgres://mpqykadjmexknq:92e4eb5c8ebfbf0c2ab75deb48d30bf8d7f0da569c85891a7bf408fc75d0b2d3@ec2-23-20-70-32.compute-1.amazonaws.com:5432/d9ksod21on33pi'
+SQLALCHEMY_DATABASE_URI = 'postgres://dkbpbwokimtlar:97fcfbf3e300a51c0d9a0941565925a0dadf2121476705e6e5d48e388d697b46@ec2-18-210-51-239.compute-1.amazonaws.com:5432/df1tirki6u3mi3'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
