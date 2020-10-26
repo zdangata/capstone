@@ -257,7 +257,13 @@ Udacity provided the starter files for the project.
 
 Zanang Dangata built the API, deployed the app using Heroku and created the test suite.
 
+## Motivations
+I have completed this project to verify that I still have a strong grasp of the skills I have developed throughout this nanodegree.
+I am blessed to have this opportunity to upskill in Software Engineering!
+
 ## Acknowledgements
+I would first like to thank Jesus Christ for giving me the strength to complete this nanodegree and for being my rock from start to finish.
+
 Shout out to my mentor, Jonathan Carrol for guiding me through this process.
 
 I would also like to thank Nicolas Georgiou, Calvin Connaghan and Andrew Muir for their support in this assignment.

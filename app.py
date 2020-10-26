@@ -1,18 +1,20 @@
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # Imports
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 import os
 import json
 import babel
-from flask import Flask, request, abort, jsonify, render_template, redirect, url_for
+from flask import Flask, request, abort, jsonify
+from flask import render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from models import Movie, Actor, setup_db
 from auth import AuthError, requires_auth, get_token_auth_header
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # Create and configure the app
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
+
 
 def create_app(test_config=None):
   # create and configure the app
@@ -219,9 +221,9 @@ def create_app(test_config=None):
       abort(40)
 
 
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
 # Error Handlers
-#----------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------#
   @app.errorhandler(400)
   def bad_request(error):
     return jsonify({
