@@ -88,6 +88,7 @@ The app is hosted at the Heroku URL address below.
 `https://zdcastagency.herokuapp.com/`
 
 This should be used for requests in postman.
+The webpage will return a 404 error message by default, but this is expected, but in postman, requests will work if the correct tokens are passed in (found in the setup file).
 
 #### Example Requests
 Requests should be sent to either of the two resources below...
