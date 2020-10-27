@@ -10,18 +10,20 @@ AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 ALGORITHMS = os.environ.get('ALGORITHMS')
 API_AUDIENCE = os.environ.get('API_AUDIENCE')
 
-## AuthError Exception
+# AuthError Exception
 '''
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 
-## Auth Header
+# Auth Header
 
 '''
 @TODO implement get_token_auth_header() method
@@ -31,29 +33,35 @@ class AuthError(Exception):
         it should raise an AuthError if the header is malformed
     return the token part of the header
 '''
-# This code was taken and adapted from Lesson 2 part 13, video 2 (https://youtu.be/v8DW_PdE48I)
+# This code was taken and adapted from Lesson 2 part 13, video 2
+# (https://youtu.be/v8DW_PdE48I)
+
+
 def get_token_auth_header():
-    #checks if token token is in the request header and returns a 401 error if not
+    # checks if token token is in the request header and returns a 401 error
+    # if not
     if 'Authorization' not in request.headers:
         print('first abort')
         abort(401)
 
-    #stores the bearer token as the variable auth_header
+    # stores the bearer token as the variable auth_header
     auth_header = request.headers.get('Authorization', None)
     header_parts = auth_header.split()
     print(header_parts)
-    #checks whether the header has 2 parts i.e. bearer prefix and the token itself
+    # checks whether the header has 2 parts i.e. bearer prefix and the token
+    # itself
     if len(header_parts) != 2:
         print('second abort')
         abort(401)
 
-    #checks that the bearer prefix is the 1st element
-    elif header_parts[0].lower() !=  'bearer':
+    # checks that the bearer prefix is the 1st element
+    elif header_parts[0].lower() != 'bearer':
         print('third abort')
         abort(401)
 
     return header_parts[1]
     #raise Exception('Not Implemented')
+
 
 '''
 @TODO implement check_permissions(permission, payload) method
@@ -66,13 +74,17 @@ def get_token_auth_header():
     it should raise an AuthError if the requested permission string is not in the payload permissions array
     return true otherwise
 '''
-# This method was taken from the sample right underneath the video in lesson 4 part 4 (https://classroom.udacity.com/nanodegrees/nd0044-ent/parts/45ce5212-27f6-4a09-8d73-ce375bc71b83/modules/2fc7d45e-d5b5-49cb-92b6-bc19d08ca35e/lessons/dd24cfef-5167-46e8-98f5-40b87cfbf00e/concepts/413c0df9-3464-44e9-9d60-390609edc34f)
+# This method was taken from the sample right underneath the video in
+# lesson 4 part 4
+# (https://classroom.udacity.com/nanodegrees/nd0044-ent/parts/45ce5212-27f6-4a09-8d73-ce375bc71b83/modules/2fc7d45e-d5b5-49cb-92b6-bc19d08ca35e/lessons/dd24cfef-5167-46e8-98f5-40b87cfbf00e/concepts/413c0df9-3464-44e9-9d60-390609edc34f)
+
+
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
-                        raise AuthError({
-                            'code': 'invalid_claims',
-                            'description': 'Permissions not included in JWT.'
-                        }, 400)
+        raise AuthError({
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
 
     if permission not in payload['permissions']:
         raise AuthError({
@@ -80,6 +92,7 @@ def check_permissions(permission, payload):
             'description': 'Permission not found.'
         }, 403)
     return True
+
 
 '''
 @TODO implement verify_decode_jwt(token) method
@@ -94,16 +107,18 @@ def check_permissions(permission, payload):
 
     !!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
 '''
-#The code here has been taken and adapted from the workspace in lesson 2 part 10 (https://classroom.udacity.com/nanodegrees/nd0044-ent/parts/45ce5212-27f6-4a09-8d73-ce375bc71b83/modules/2fc7d45e-d5b5-49cb-92b6-bc19d08ca35e/lessons/4d0e3ea3-77bf-46f9-bcd1-6a44273286d8/concepts/87007dfe-8503-40ae-bc21-3ef608c1f45f)
-## Auth Header
+# The code here has been taken and adapted from the workspace in lesson 2 part 10 (https://classroom.udacity.com/nanodegrees/nd0044-ent/parts/45ce5212-27f6-4a09-8d73-ce375bc71b83/modules/2fc7d45e-d5b5-49cb-92b6-bc19d08ca35e/lessons/4d0e3ea3-77bf-46f9-bcd1-6a44273286d8/concepts/87007dfe-8503-40ae-bc21-3ef608c1f45f)
+# Auth Header
+
+
 def verify_decode_jwt(token):
     # GET THE PUBLIC KEY FROM AUTH0
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
-    
+
     # GET THE DATA IN THE HEADER
     unverified_header = jwt.get_unverified_header(token)
-    
+
     # CHOOSE OUR KEY
     rsa_key = {}
     if 'kid' not in unverified_header:
@@ -121,7 +136,7 @@ def verify_decode_jwt(token):
                 'n': key['n'],
                 'e': key['e']
             }
-    
+
     # Finally, verify!!!
     if rsa_key:
         try:
@@ -151,11 +166,13 @@ def verify_decode_jwt(token):
             raise AuthError({
                 'code': 'invalid_header',
                 'description': 'Unable to parse authentication token.'
-         }, 400)
-    raise AuthError({
-                'code': 'invalid_header',
-                'description': 'Unable to find the appropriate key.'
             }, 400)
+    raise AuthError({
+        'code': 'invalid_header',
+                'description': 'Unable to find the appropriate key.'
+    }, 400)
+
+
 '''
 @TODO implement @requires_auth(permission) decorator method
     @INPUTS
@@ -166,6 +183,8 @@ def verify_decode_jwt(token):
     it should use the check_permissions method validate claims and check the requested permission
     return the decorator which passes the decoded payload to the decorated method
 '''
+
+
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)

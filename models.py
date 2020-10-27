@@ -13,6 +13,7 @@ db = SQLAlchemy()
 # Database Setup
 #----------------------------------------------------------------------------#
 
+
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -20,15 +21,17 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     migrate = Migrate(app, db)
 
+
 def create_app(test_config=None):
-  # create and configure the app
-  app = Flask(__name__)
-  setup_db(app)
-  return app
+    # create and configure the app
+    app = Flask(__name__)
+    setup_db(app)
+    return app
 
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
+
 
 class Movie(db.Model):
     __tablename__ = 'Movie'
@@ -46,7 +49,7 @@ class Movie(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
-  
+
     def update(self):
         db.session.commit()
 
@@ -56,14 +59,15 @@ class Movie(db.Model):
 
     def format(self):
         return {
-        'id': self.id,
-        'movie': self.movie,
-        'genres': self.genres,
-        'age_rating': self.age_rating
+            'id': self.id,
+            'movie': self.movie,
+            'genres': self.genres,
+            'age_rating': self.age_rating
         }
 
     # def __repr__(self):
-    #     return f'<Movie {self.id} {self.name} {self.genres} {self.age_rating}>'
+    # return f'<Movie {self.id} {self.name} {self.genres} {self.age_rating}>'
+
 
 class Actor(db.Model):
     __tablename__ = 'Actor'
@@ -81,7 +85,7 @@ class Actor(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
-  
+
     def update(self):
         db.session.commit()
 
@@ -91,10 +95,10 @@ class Actor(db.Model):
 
     def format(self):
         return {
-        'id': self.id,
-        'actor': self.actor,
-        'age': self.age,
-        'awards': self.awards
+            'id': self.id,
+            'actor': self.actor,
+            'age': self.age,
+            'awards': self.awards
         }
 
     # def __repr__(self):

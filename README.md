@@ -85,7 +85,7 @@ Make sure you change the DATABASE_URL environment variable in setup.sh file to h
 ### Using Postman
 The app is hosted at the Heroku URL address below.
 
-`https://zdcastagency.herokuapp.com/`
+`https://capstonecastingzdapp.herokuapp.com/`
 
 This should be used for requests in postman.
 The webpage will return a 404 error message by default, but this is expected, but in postman, requests will work if the correct tokens are passed in (found in the setup file).
@@ -93,8 +93,8 @@ The webpage will return a 404 error message by default, but this is expected, bu
 #### Example Requests
 Requests should be sent to either of the two resources below...
 ```
-https://zdcastagency.herokuapp.com/actors
-https://zdcastagency.herokuapp.com/movies
+https://capstonecastingzdapp.herokuapp.com/actors
+https://capstonecastingzdapp.herokuapp.com/movies
 ```
 ## Endpoints
 ### GET /movies
@@ -102,7 +102,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Returns a list of each of the movie objects
     * Returns the total number of objects
-* Sample: `https://zdcastagency.herokuapp.com/movies`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/movies`
 
 ```
 {
@@ -129,7 +129,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Returns a list of each of the actor objects
     * Returns the total number of objects
-* Sample: `https://zdcastagency.herokuapp.com/actors`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/actors`
 ```
 {
     "actors": [
@@ -156,7 +156,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Creates a new movie
     * Returns the number of the created movie, the success status of the request and the new total number of movies
-* Sample: `https://zdcastagency.herokuapp.com/movies`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/movies`
 * JSON Sample for post request: `{
     "movie": "Click the Dot",
     "genres": "Alternative",
@@ -176,7 +176,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Creates a new actor
     * Returns the number of the created actor, the success status of the request and the new total number of actors
-* Sample: `https://zdcastagency.herokuapp.com/actors`
+* Sample: `https://capstonecastingzdapp.herokuapp.comactors`
 * JSON Sample for post request: `{
     "actor": "Mike Birch",
     "age": "29",
@@ -196,7 +196,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Deletes a specific movie, using its unique id as in input
     * Returns the deleted movie number and the success status of the request.
-* Sample: `https://zdcastagency.herokuapp.com/movies/11`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/movies/11`
 
 ```
 {
@@ -210,7 +210,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Deletes a specific actor, using its unique id as in input
     * Returns the deleted actor number and the success status of the request.
-* Sample: `https://zdcastagency.herokuapp.com/actors/13`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/actors/13`
 
 ```
 {
@@ -223,7 +223,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Modifies the details of a movie
     * Returns the success status of the request and the id of the updated movie
-* Sample: `https://zdcastagency.herokuapp.com/movies/15`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/movies/15`
 * JSON Sample for post request: `{
     "genres": "Rom Com",
     "age_rating": "Fifteen"
@@ -241,7 +241,7 @@ https://zdcastagency.herokuapp.com/movies
 
     * Modifies the details of a movie
     * Returns the success status of the request and the id of the updated actor
-* Sample: `https://zdcastagency.herokuapp.com/actors/14`
+* Sample: `https://capstonecastingzdapp.herokuapp.com/actors/14`
 * JSON Sample for post request: `{
     "id": 15,
     "success": true
