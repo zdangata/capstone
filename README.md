@@ -265,6 +265,8 @@ I am blessed to have this opportunity to upskill in Software Engineering!
 ## Acknowledgements
 I would first like to thank Jesus Christ for giving me the strength to complete this nanodegree and for being my rock from start to finish.
 
+Big up to my family who where there for me day and night when the going got rough.
+
 Shout out to my mentor, Jonathan Carrol for guiding me through this process.
 
 I would also like to thank Nicolas Georgiou, Calvin Connaghan and Andrew Muir for their support in this assignment.
